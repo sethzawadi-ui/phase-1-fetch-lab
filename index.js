@@ -1,17 +1,26 @@
 function fetchBooks() {
-  // To pass the tests, don't forget to return your fetch!
-  
+  return fetch('https://anapioficeandfire.com/api/books')
+    .then(res => res.json())
+    .then(data => {
+      renderBooks(data);
+      return data; // so the tests can await/chain
+    });
 }
 
+// This function will take the books and put them into the DOM
 function renderBooks(books) {
   const main = document.querySelector('main');
   books.forEach(book => {
-    const h2 = document.createElement('h2');
-    h2.innerHTML = book.name;
-    main.appendChild(h2);
+    const p = document.createElement('p');
+    p.textContent = book.name;
+    main.appendChild(p);
   });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  fetchBooks();
-});
+// If your test runner is Node-based and expects exports
+if (typeof module !== "undefined") {
+  module.exports = {
+    fetchBooks,
+    renderBooks
+  };
+}
